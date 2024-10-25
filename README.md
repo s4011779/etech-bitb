@@ -310,20 +310,6 @@ Copy custom substitution files (the core of our approach):
 sudo cp -r ./custom-subs /etc/apache2/custom-subs
 ```
 
-
-**Important Note:** In this repo I have included 2 substitution configs for Chrome on Mac and Chrome on Windows BITB. Both have auto-detection and styling for light/dark mode and they should act as base templates to achieve the same for other browser/OS combos.
-Since I did not include automatic detection of the browser/OS combo used to visit our phishing page, you will have to use one of two or implement your own logic for automatic switching.
-
-Both config files under `/apache-configs/` are the same, only with a different Include directive used for the substitution file that will be included. (there are 2 references for each file)
-
-```
-# Uncomment the one you want and remember to restart Apache after any changes:
-#Include /etc/apache2/custom-subs/win-chrome.conf
-Include /etc/apache2/custom-subs/mac-chrome.conf
-```
-
-
-
 Simply to make it easier, I included both versions as separate files for this next step.
 
 
@@ -333,11 +319,6 @@ Simply to make it easier, I included both versions as separate files for this ne
 sudo cp ./apache-configs/win-chrome-bitb.conf /etc/apache2/sites-enabled/000-default.conf
 ```
 
-**Mac/Chrome** BITB:
-
-```
-sudo cp ./apache-configs/mac-chrome-bitb.conf /etc/apache2/sites-enabled/000-default.conf
-```
 
 
 
@@ -377,19 +358,6 @@ Change the file types (bottom-right) to "All files".
 Double-click the file named `hosts`
 
 
-
-
-**On Mac:**
-
-Open a terminal and run the following:
-
-```
-sudo nano /private/etc/hosts
-```
-
-
-
-
 Now modify the following records (replace `[IP]` with the IP of your VM) then paste the records at the end of the hosts file:
 
 ```
@@ -406,11 +374,6 @@ Now modify the following records (replace `[IP]` with the IP of your VM) then pa
 Save and exit.
 
 Now restart your browser before moving to the next step.
-
-
-**Note:** On Mac, use the following command to flush the DNS cache:
-
-`sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder`
 
 
 #### Important Note:
@@ -448,26 +411,10 @@ Double-click it > install for current user. Do NOT select automatic, instead pla
 You should be able to visit `https://etech-it.com.au` now and see the homepage without any SSL warnings.
 
 
-
-
-
-
 ## Running Evilginx:
 
 
 At this point, everything should be ready so we can go ahead and start Evilginx, set up the phishlet, create our lure, and test it.
-
-Optional: Install tmux (to keep evilginx running even if the terminal session is closed. Mainly useful when running on remote VM.)
-
-```
-sudo apt install tmux -y
-```
-
-Start Evilginx in developer mode (using tmux to avoid losing the session):
-
-```
-tmux new-session -s evilginx
-```
 
 ```
 cd ~/evilginx/
@@ -476,9 +423,6 @@ cd ~/evilginx/
 ```
 ./evilginx -developer
 ```
-
-(To re-attach to the tmux session use `tmux attach-session -t evilginx`)
-
 
 Evilginx Config:
 
