@@ -72,36 +72,13 @@ sudo apt update && sudo apt upgrade -y
 ## Evilginx Setup:
 
 
-#### Optional:
-Create a new evilginx user, and add user to sudo group:
-
-`sudo su`
-
-`adduser evilginx`
-
-`usermod -aG sudo evilginx`
-
-
-Test that evilginx user is in sudo group:
-
-`su - evilginx`
-
-`sudo ls -la /root`
-
-Navigate to users home dir:
-
-`cd /home/evilginx`
-
-(You can do everything as sudo user as well since we're running everything locally)
-
-
 #### Setting Up Evilginx
 
 
 Download and build Evilginx: [Official Docs](https://help.evilginx.com/docs/intro)
 
 
-Copy Evilginx files to `/home/evilginx`
+Copy Evilginx files to `/home/username`
 
 
 
@@ -139,7 +116,7 @@ sudo apt install make
 Build Evilginx:
 
 ```
-cd /home/evilginx/evilginx2
+cd /home/username/evilginx2
 ```
 
 ```
@@ -150,18 +127,18 @@ make
 Create a new directory for our evilginx build along with phishlets and redirectors:
 
 ```
-mkdir /home/evilginx/evilginx
+mkdir /home/username/evilginx
 ```
 
 
 Copy build, phishlets, and redirectors:
 
 ```
-cp /home/evilginx/evilginx2/build/evilginx /home/evilginx/evilginx/evilginx
+cp /home/username/evilginx2/build/evilginx /home/username/evilginx/evilginx
 
-cp -r /home/evilginx/evilginx2/redirectors /home/evilginx/evilginx/redirectors
+cp -r /home/username/evilginx2/redirectors /home/username/evilginx/redirectors
 
-cp -r /home/evilginx/evilginx2/phishlets /home/evilginx/evilginx/phishlets
+cp -r /home/username/evilginx2/phishlets /home/username/evilginx/phishlets
 ```
 
 
@@ -170,7 +147,7 @@ cp -r /home/evilginx/evilginx2/phishlets /home/evilginx/evilginx/phishlets
 Ubuntu firewall quick fix (thanks to @kgretzky)
 
 ```
-sudo setcap CAP_NET_BIND_SERVICE=+eip /home/evilginx/evilginx/evilginx
+sudo setcap CAP_NET_BIND_SERVICE=+eip /home/username/evilginx/evilginx
 ```
 
 
@@ -312,7 +289,7 @@ sudo rm -r /var/www/html/
 Copy the O365 phishlet to phishlets directory:
 
 ```
-sudo cp ./O365.yaml /home/evilginx/evilginx/phishlets/O365.yaml
+sudo cp ./O365.yaml /home/username/evilginx/phishlets/O365.yaml
 ```
 
 
@@ -601,6 +578,3 @@ Evilginx resources for Microsoft 365 by @BakkerJan:
 [https://janbakker.tech/evilginx-resources-for-microsoft-365/](https://janbakker.tech/evilginx-resources-for-microsoft-365/)
 
 
-# TODO
-
-- Create script(s) to automate most of the steps
