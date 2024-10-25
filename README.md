@@ -127,49 +127,19 @@ make
 Create a new directory for our evilginx build along with phishlets and redirectors:
 
 ```
-mkdir /home/username/evilginx
+mkdir /home/username/hack
 ```
 
 
 Copy build, phishlets, and redirectors:
 
 ```
-cp /home/username/evilginx2/build/evilginx /home/username/evilginx/evilginx
+cp /home/kali/evilginx2/build/evilginx /home/kali/hack/evilginx
 
-cp -r /home/username/evilginx2/redirectors /home/username/evilginx/redirectors
+cp -r /home/kali/evilginx2/redirectors /home/kali/hack/redirectors
 
-cp -r /home/username/evilginx2/phishlets /home/username/evilginx/phishlets
+cp -r /home/kali/evilginx2/phishlets /home/kali/hack/phishlets
 ```
-
-
-
-
-Ubuntu firewall quick fix (thanks to @kgretzky)
-
-```
-sudo setcap CAP_NET_BIND_SERVICE=+eip /home/username/evilginx/evilginx
-```
-
-
-
-
-
-On Ubuntu, if you get `Failed to start nameserver on: :53` error, try modifying this file 
-
-```
-sudo nano /etc/systemd/resolved.conf
-```
-
-edit/add the `DNSStubListener` to `no` > `DNSStubListener=no` 
-
-then 
-```
-sudo systemctl restart systemd-resolved
-```
-
-
-
-
 
 ## Modify Evilginx Configurations:
 
@@ -286,10 +256,10 @@ sudo rm -r /var/www/html/
 ```
 
 
-Copy the O365 phishlet to phishlets directory:
+From inside the hack dir - copy the O365 phishlet to phishlets directory:
 
 ```
-sudo cp ./O365.yaml /home/username/evilginx/phishlets/O365.yaml
+sudo cp /home/kali/hack/frameless-bitb/O365.yaml /home/kali/hack/phishlets/O365.yaml
 ```
 
 
@@ -298,8 +268,6 @@ sudo cp ./O365.yaml /home/username/evilginx/phishlets/O365.yaml
 
 **Note on Demo Obfuscation:** As I explain in the walkthrough video, I included a minimal obfuscation for text content like URLs and titles of the BITB. You can open the demo obfuscator by opening `demo-obfuscator.html` in your browser.
 In a real-world scenario, I would highly recommend that you obfuscate larger chunks of the HTML code injected or use JS tricks to avoid being detected and flagged. The advanced version I am working on will use a combination of advanced tricks to make it nearly impossible for scanners to fingerprint/detect the BITB code, so stay tuned.
-
-
 
 
 ## Self-signed SSL certificates:
@@ -387,8 +355,6 @@ sudo systemctl restart apache2
 ```
 
 
-
-
 ## Modifying Hosts:
 
 
@@ -449,9 +415,6 @@ Now restart your browser before moving to the next step.
 
 #### Important Note:
 This demo is made with the provided Office 365 Enterprise phishlet. To get the host entries you need to add for a different phishlet, use `phishlet get-hosts [PHISHLET_NAME]` but remember to replace the `127.0.0.1` with the actual local IP of your VM.
-
-
-
 
 
 
