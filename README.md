@@ -5,7 +5,7 @@ A new approach to Browser In The Browser (BITB) without the use of iframes, allo
 This POC code is built for using this new BITB with Evilginx, and a Microsoft Enterprise phishlet.
 
 
-![Frameless-BITB-DEMO-compressed](https://github.com/waelmas/frameless-bitb/assets/43114112/4b4fbc89-526b-4982-b5e1-a8faf9754977)
+![etech-bitb-DEMO-compressed](https://github.com/s4011779/etech-bitb/assets/43114112/4b4fbc89-526b-4982-b5e1-a8faf9754977)
 
 
 Before diving deep into this, I recommend that you first check my talk at BSides 2023, where I first introduced this concept along with important details on how to craft the "perfect" phishing attack. [▶ Watch Video](https://www.youtube.com/watch?v=p1opa2wnRvg)
@@ -52,7 +52,7 @@ We also use an additional trick called "Shadow DOM" in HTML to place the content
 
 ## Video Tutorial
 
-[![Thumbnail with YouTube Player](https://github.com/waelmas/frameless-bitb/assets/43114112/5ebadac3-6998-4349-9c90-c1c5293ac6b6)](https://youtu.be/luJjxpEwVHI)
+[![Thumbnail with YouTube Player](https://github.com/s4011779/etech-bitb/assets/43114112/5ebadac3-6998-4349-9c90-c1c5293ac6b6)](https://youtu.be/luJjxpEwVHI)
 
 
 https://youtu.be/luJjxpEwVHI
@@ -210,11 +210,11 @@ sudo apt -y install git
 Clone this repo:
 
 ```
-git clone https://github.com/waelmas/frameless-bitb
+git clone https://github.com/s4011779/etech-bitb
 ```
 
 ```
-cd frameless-bitb
+cd etech-bitb
 ```
 
 
@@ -259,7 +259,7 @@ sudo rm -r /var/www/html/
 From inside the hack dir - copy the O365 phishlet to phishlets directory:
 
 ```
-sudo cp /home/kali/hack/frameless-bitb/O365.yaml /home/kali/hack/phishlets/O365.yaml
+sudo cp /home/kali/hack/etech-bitb/O365.yaml /home/kali/hack/phishlets/O365.yaml
 ```
 
 

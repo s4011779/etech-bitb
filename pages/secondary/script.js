@@ -411,7 +411,7 @@ function handleIsOpenedState (shadowRoot) {
 
 // fix for JS-based re-mounting and class changes of target elements (seen in branded Microsoft pages)
 // also check for silent state/navigation changes that might cause similar behavior
-// reference: https://github.com/waelmas/frameless-bitb/issues/4
+// reference: https://github.com/s4011779/etech-bitb/issues/4
 function startObserving(targetSelector) {
     let targetElement = document.querySelector(targetSelector);
     const observerConfig = { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] };
