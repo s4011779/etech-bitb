@@ -330,13 +330,13 @@ In a real-world scenario, I would highly recommend that you obfuscate larger chu
 Since we are running everything locally, we need to generate self-signed SSL certificates that will be used by Apache. Evilginx will not need the certs as we will be running it in developer mode.
 
 
-We will use the domain `fake.com` which will point to our local VM. If you want to use a different domain, make sure to change the domain in all files (Apache conf files, JS files, etc.)
+We will use the domain `etech-it.com.au` which will point to our local VM. If you want to use a different domain, make sure to change the domain in all files (Apache conf files, JS files, etc.)
 
 
 Create dir and parents if they do not exist:
 
 ```
-sudo mkdir -p /etc/ssl/localcerts/fake.com/
+sudo mkdir -p /etc/ssl/localcerts/etech-it.com.au/
 ```
 
 
@@ -344,14 +344,14 @@ Generate the SSL certs using the OpenSSL config file:
 
 ```
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
--keyout /etc/ssl/localcerts/fake.com/privkey.pem -out /etc/ssl/localcerts/fake.com/fullchain.pem \
+-keyout /etc/ssl/localcerts/etech-it.com.au/privkey.pem -out /etc/ssl/localcerts/etech-it.com.au/fullchain.pem \
 -config openssl-local.cnf
 ```
 
 Modify private key permissions:
 
 ```
-sudo chmod 600 /etc/ssl/localcerts/fake.com/privkey.pem
+sudo chmod 600 /etc/ssl/localcerts/etech-it.com.au/privkey.pem
 ```
 
 
@@ -417,7 +417,7 @@ sudo systemctl restart apache2
 
 Get the IP of the VM using `ifconfig` and note it somewhere for the next step.
 
-We now need to add new entries to our hosts file, to point the domain used in this demo `fake.com` and all used subdomains to our VM on which Apache and Evilginx are running.
+We now need to add new entries to our hosts file, to point the domain used in this demo `etech-it.com.au` and all used subdomains to our VM on which Apache and Evilginx are running.
 
 
 
@@ -451,12 +451,12 @@ Now modify the following records (replace `[IP]` with the IP of your VM) then pa
 
 ```
 # Local Apache and Evilginx Setup
-[IP] login.fake.com
-[IP] account.fake.com
-[IP] sso.fake.com
-[IP] www.fake.com
-[IP] portal.fake.com
-[IP] fake.com
+[IP] login.etech-it.com.au
+[IP] account.etech-it.com.au
+[IP] sso.etech-it.com.au
+[IP] www.etech-it.com.au
+[IP] portal.etech-it.com.au
+[IP] etech-it.com.au
 # End of section
 ```
 
@@ -481,13 +481,13 @@ This demo is made with the provided Office 365 Enterprise phishlet. To get the h
 ## Trusting the Self-Signed SSL Certs:
 
 
-Since we are using self-signed SSL certificates, our browser will warn us every time we try to visit `fake.com` so we need to make our host machine trust the certificate authority that signed the SSL certs.
+Since we are using self-signed SSL certificates, our browser will warn us every time we try to visit `etech-it.com.au` so we need to make our host machine trust the certificate authority that signed the SSL certs.
 
 For this step, it's easier to follow the video instructions, but here is the gist anyway.
 
 
 
-Open [https://fake.com/](https://fake.com/) in your Chrome browser.
+Open [https://etech-it.com.au/](https://etech-it.com.au/) in your Chrome browser.
 
 Ignore the Unsafe Site warning and proceed to the page.
 
@@ -505,7 +505,7 @@ Double-click it > install for current user. Do NOT select automatic, instead pla
 
 **Now RESTART your Browser**
 
-You should be able to visit `https://fake.com` now and see the homepage without any SSL warnings.
+You should be able to visit `https://etech-it.com.au` now and see the homepage without any SSL warnings.
 
 
 
@@ -543,7 +543,7 @@ cd ~/evilginx/
 Evilginx Config:
 
 ```
-config domain fake.com
+config domain etech-it.com.au
 ```
 
 ```
@@ -562,7 +562,7 @@ blacklist noadd
 Setup Phishlet and Lure:
 
 ```
-phishlets hostname O365 fake.com
+phishlets hostname O365 etech-it.com.au
 ```
 
 ```
