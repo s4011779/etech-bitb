@@ -7,7 +7,7 @@ This tool is for educational and research purposes only. It demonstrates a non-i
 # Instructions
 
 ## Local VM:
-Create a local Linux VM
+Create a local Linux VM and ensure it is on bridged adapter network mode
 
 Update and Upgrade system packages:
 
@@ -295,52 +295,10 @@ Restart Apache to apply changes:
 sudo systemctl restart apache2
 ```
 
-
-## Modifying Hosts:
-
-
-Get the IP of the VM using `ifconfig` and note it somewhere for the next step.
-
-We now need to add new entries to our hosts file, to point the domain used in this demo `etech-it.com.au` and all used subdomains to our VM on which Apache and Evilginx are running.
-
-
-
-**On Windows:**
-
-Open Notepad as Administrator (Search > Notepad > Right-Click > Run as Administrator)
-
-Click on the File option (top-left) and in the File Explorer address bar, copy and paste the following:
-
-`C:\Windows\System32\drivers\etc\`
-
-Change the file types (bottom-right) to "All files".
-
-Double-click the file named `hosts`
-
-
-Now modify the following records (replace `[IP]` with the IP of your VM) then paste the records at the end of the hosts file:
-
-```
-# Local Apache and Evilginx Setup
-[IP] login.etech-it.com.au
-[IP] account.etech-it.com.au
-[IP] sso.etech-it.com.au
-[IP] www.etech-it.com.au
-[IP] portal.etech-it.com.au
-[IP] etech-it.com.au
-# End of section
-```
-
-Save and exit.
-
-Now restart your browser before moving to the next step.
-
-
 #### Important Note:
 This demo is made with the provided Office 365 Enterprise phishlet. To get the host entries you need to add for a different phishlet, use `phishlet get-hosts [PHISHLET_NAME]` but remember to replace the `127.0.0.1` with the actual local IP of your VM.
 
-
-
+Head back into evilginx2:
 
 Setup Phishlet and Lure:
 
@@ -361,8 +319,69 @@ lures get-url 0
 ```
 
 
-Copy the lure URL and visit it from your browser (use Guest user on Chrome to avoid having to delete all saved/cached data between tests).
+Copy the lure URL and store
 
+## Modifying Hosts:
+
+
+Get the IP of the VM using `ifconfig` and note it somewhere for the next step.
+
+We now need to add new entries to our hosts file, to point the domain used in this demo `etech-it.com.au` and all used subdomains to our VM on which Apache and Evilginx are running.
+
+
+## On attacker Linux machine:
+
+```
+ifconfig
+```
+copy ip 
+
+```
+sudo nano /etc/hosts
+```
+
+add copied IP to hosts file:
+```
+# Local Apache and Evilginx Setup
+[IP] login.etech-it.com.au
+[IP] account.etech-it.com.au
+[IP] sso.etech-it.com.au
+[IP] www.etech-it.com.au
+[IP] portal.etech-it.com.au
+[IP] etech-it.com.au
+# End of section
+```
+
+Copy the lure URL and visit it from a private browser, it should display your BITB phishing page.
+
+## Now change to your Targets Windows machine:**
+
+Open Notepad as Administrator (Search > Notepad > Right-Click > Run as Administrator)
+
+Click on the File option (top-left) and in the File Explorer address bar, copy and paste the following:
+
+`C:\Windows\System32\drivers\etc\`
+
+Change the file types (bottom-right) to "All files".
+
+Double-click the file named `hosts`
+
+Now modify the following records (replace `[IP]` with the IP of your VM) then paste the records at the end of the hosts file:
+
+```
+# Local Apache and Evilginx Setup
+[IP] login.etech-it.com.au
+[IP] account.etech-it.com.au
+[IP] sso.etech-it.com.au
+[IP] www.etech-it.com.au
+[IP] portal.etech-it.com.au
+[IP] etech-it.com.au
+# End of section
+```
+
+Save and exit.
+
+Now restart your browser before moving to the next step.
 
 ## Trusting the Self-Signed SSL Certs:
 
@@ -371,11 +390,11 @@ Since we are using self-signed SSL certificates, our browser will warn us every 
 
 For this step, it's easier to follow the video instructions, but here is the gist anyway.
 
+## ON 'Target's machine (victim) Windows
 
 Open [https://etech-it.com.au/](https://etech-it.com.au/) in your Chrome browser.
 
 Ignore the Unsafe Site warning and proceed to the page.
-
 
 Click the SSL icon > Details > Export Certificate
 **IMPORTANT:** When saving, the name MUST end with .crt for Windows to open it correctly.
@@ -386,7 +405,6 @@ Double-click it > install for current user. Do NOT select automatic, instead pla
 **Now RESTART your Browser**
 
 You should be able to visit your evilnginx2 lure now and see the phishing page without any SSL warnings.
-
 
 # Useful Resources
 
@@ -405,5 +423,3 @@ How to protect Evilginx using Cloudflare and HTML Obfuscation:
 
 Evilginx resources for Microsoft 365 by @BakkerJan:
 [https://janbakker.tech/evilginx-resources-for-microsoft-365/](https://janbakker.tech/evilginx-resources-for-microsoft-365/)
-
-
